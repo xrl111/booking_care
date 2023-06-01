@@ -1,0 +1,35 @@
+{
+  "name": "booking_care",
+  "version": "1.0.0",
+  "description": "booking_care buid by Ender",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xrl111/booking_care.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xrl111/booking_care/issues"
+  },
+  "homepage": "https://github.com/xrl111/booking_care#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql2": "^3.3.3",
+    "sequelize": "^6.31.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/node": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.1.1",
+    "ejs": "^3.1.9",
+    "nodemon": "^2.0.22",
+    "sequelize-cli": "^6.6.0"
+  }
+}
