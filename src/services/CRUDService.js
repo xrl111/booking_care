@@ -9,6 +9,7 @@ let createNewUser = async (data) => {
                 email: data.email,
                 password: hashPasswordFromBcrypt,
                 firstName: data.firstName,
+                lastName: data.lastName,
                 address: data.address,
                 phoneNumber: data.phoneNumber,
                 gender: data.gender === '1' ? true : false,
@@ -90,9 +91,28 @@ let updateUserData = (data) => {
         }
     })
 }
+let deleteUserById = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: userId }
+            })
+            if (user) {
+                await user.destroy();
+                resolve();
+            } else {
+                resolve('No such user!');
+            }
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
 module.exports = {
     createNewUser: createNewUser,
     getAllUser: getAllUser,
     getUserInfoById: getUserInfoById,
     updateUserData: updateUserData,
+    deleteUserById: deleteUserById,
 }
