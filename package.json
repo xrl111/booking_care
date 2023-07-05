@@ -19,6 +19,7 @@
   "homepage": "https://github.com/xrl111/booking_care#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "mysql2": "^3.3.3",
     "sequelize": "^6.31.1"
