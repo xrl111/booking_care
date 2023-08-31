@@ -10,6 +10,24 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
+
+// const customizeConfig = {
+//   host: process.env.DB_HOST,
+//   port: process.env.DB_PORT,
+//   dialect: process.env.DB_DIALECT,
+//   logging: false,
+//   query: {
+//     "raw": true
+//   },
+//   timezone: "+07:00"
+// }
+// sequelize = new Sequelize(
+//   process.env.DB_DATABASE_NAME,
+//   process.env.DB_USERNAME,
+//   process.env.DB_PASSWORD,
+//   customizeConfig
+// );
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
