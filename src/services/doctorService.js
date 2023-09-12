@@ -325,7 +325,8 @@ let getProfileDoctorById = (inputId) => {
                     },
                     include: [
                         {
-                            model: db.Markdown, attributes: [
+                            model: db.Markdown, 
+                            attributes: [
                                 'description', 'contentHTML', 'contentMarkdown'
                             ]
                         },
