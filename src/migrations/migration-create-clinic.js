@@ -7,32 +7,35 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
             address: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
             },
-            description: {
-                type: Sequelize.TEXT
+            descriptionMarkdown: {
+                type: Sequelize.TEXT,
+            },
+            descriptionHTML: {
+                type: Sequelize.TEXT,
             },
             image: {
-                type: Sequelize.STRING
+                type: Sequelize.BLOB('long'),
             },
 
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('Clinics');
-    }
+    },
 };

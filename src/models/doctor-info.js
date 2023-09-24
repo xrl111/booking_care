@@ -1,7 +1,5 @@
 'use strict';
-const {
-    Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Doctor_Info extends Model {
         /**
@@ -10,26 +8,44 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Doctor_Info.belongsTo(models.User, { foreignKey: 'doctorId' })
+            Doctor_Info.belongsTo(models.User, { foreignKey: 'doctorId' });
 
-            Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'priceId', targetKey: 'keyMap', as: 'priceTypeData' })
-            Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'provinceId', targetKey: 'keyMap', as: 'provinceTypeData' })
-            Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'paymentId', targetKey: 'keyMap', as: 'paymentTypeData' })
+            Doctor_Info.belongsTo(models.Allcode, { foreignKey: 'priceId', targetKey: 'keyMap', as: 'priceTypeData' });
+            Doctor_Info.belongsTo(models.Allcode, {
+                foreignKey: 'provinceId',
+                targetKey: 'keyMap',
+                as: 'provinceTypeData',
+            });
+            Doctor_Info.belongsTo(models.Allcode, {
+                foreignKey: 'paymentId',
+                targetKey: 'keyMap',
+                as: 'paymentTypeData',
+            });
+            Doctor_Info.belongsTo(models.Specialty, {
+                foreignKey: 'specialtyId',
+                targetKey: 'id',
+                as: 'specialtyData',
+            });
         }
     }
-    Doctor_Info.init({
-        doctorId: DataTypes.INTEGER,
-        priceId: DataTypes.STRING,
-        provinceId: DataTypes.STRING,
-        paymentId: DataTypes.STRING,
-        nameClinic: DataTypes.STRING,
-        addressClinic: DataTypes.STRING,
-        note: DataTypes.STRING,
-        count: DataTypes.INTEGER
-    }, {
-        sequelize,
-        modelName: 'Doctor_Info',
-        freezeTableName: true,
-    });
+    Doctor_Info.init(
+        {
+            doctorId: DataTypes.INTEGER,
+            specialtyId: DataTypes.INTEGER,
+            clinicId: DataTypes.INTEGER,
+            priceId: DataTypes.STRING,
+            provinceId: DataTypes.STRING,
+            paymentId: DataTypes.STRING,
+            nameClinic: DataTypes.STRING,
+            addressClinic: DataTypes.STRING,
+            note: DataTypes.STRING,
+            count: DataTypes.INTEGER,
+        },
+        {
+            sequelize,
+            modelName: 'Doctor_Info',
+            freezeTableName: true,
+        },
+    );
     return Doctor_Info;
 };
