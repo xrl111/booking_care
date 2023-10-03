@@ -69,7 +69,7 @@ let postBookAppointment = (data) => {
                 }
                 resolve({
                     errCode: 0,
-                    errMessage: 'Save infor patient successfully',
+                    errMessage: 'Save info patient successfully',
                 });
             }
         } catch (e) {

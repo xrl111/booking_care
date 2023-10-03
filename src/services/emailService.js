@@ -12,7 +12,7 @@ let sendSimpleEmail = async (dataSend) => {
         },
     });
     let info = await transporter.sendMail({
-        from: '"MediHEAL 👻" <buiduclan000@gmail.com>', // sender address
+        from: '"MediHEAL 👻" <endertest111@gmail.com>', // sender address
         to: dataSend.reciverEmail, // list of receivers
         subject: 'Thông tin đặt lịch khám bệnh ✔', // Subject line
         html: getBodyHTMLEmail(dataSend),
@@ -74,37 +74,31 @@ let getBodyHTMLEmailRemedy = (dataSend) => {
 
     <div>Best regards, Mediheal</div>`;
     }
+    return result;
 };
 
 let sendAttachment = async (dataSend) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com',
-                port: '587',
-                secure: false,
-                auth: {
-                    user: process.env.EMAIL_APP,
-                    pass: process.env.EMAIL_APP_PASSWORD,
-                },
-            });
-            let info = await transporter.sendMail({
-                from: '"MediHeal" <endertest111@gmail.com>',
-                to: dataSend.email,
-                subject: 'Results of medical appointment!',
-                html: getBodyHTMLEmailRemedy(dataSend),
-                attachments: [
-                    {
-                        filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
-                        content: dataSend.imgBase64.split('base64')[1],
-                        encoding: 'base64',
-                    },
-                ],
-            });
-            resolve(true);
-        } catch (e) {
-            reject(e);
-        }
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_APP,
+            pass: process.env.EMAIL_APP_PASSWORD,
+        },
+    });
+    let info = await transporter.sendMail({
+        from: '"MediHEAL 👻" <endertest111@gmail.com>',
+        to: dataSend.email,
+        subject: 'Results of medical appointment!',
+        html: getBodyHTMLEmailRemedy(dataSend),
+        attachments: [
+            {
+                filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
+                content: dataSend.imgBase64.split('base64')[1],
+                encoding: 'base64',
+            },
+        ],
     });
 };
 module.exports = {
