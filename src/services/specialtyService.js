@@ -9,16 +9,34 @@ let createSpecialty = (data) => {
                     errMessage: 'Missing parameter!!!',
                 });
             } else {
-                await db.Specialty.create({
-                    name: data.name,
-                    image: data.imageBase64,
-                    descriptionHTML: data.descriptionHTML,
-                    descriptionMarkdown: data.descriptionMarkdown,
-                });
+                if (data.action === 'ADD') {
+                    await db.Specialty.create({
+                        name: data.name,
+                        image: data.imageBase64,
+                        descriptionHTML: data.descriptionHTML,
+                        descriptionMarkdown: data.descriptionMarkdown,
+                    });
+                } else {
+                    if (data.action === 'EDIT') {
+                        let specialty = await db.Specialty.findOne({
+                            where: { id: data.specialtyId },
+                            raw: false,
+                        });
+
+                        if (specialty) {
+                            specialty.name = data.name;
+                            specialty.image = data.imageBase64;
+                            specialty.descriptionHTML = data.descriptionHTML;
+                            specialty.descriptionMarkdown = data.descriptionMarkdown;
+                            await specialty.save();
+                        }
+                    }
+                }
 
                 resolve({
                     errCode: 0,
                     errMessage: 'ok',
+                    data,
                 });
             }
         } catch (e) {
@@ -93,8 +111,35 @@ let getDetailSpecialtyById = (inputId, location) => {
         }
     });
 };
+let getDetailSpecialtyByIdForManagement = (inputId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!inputId) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing parameter!!!',
+                });
+            } else {
+                let data = await db.Specialty.findOne({
+                    where: {
+                        id: inputId,
+                    },
+                    attributes: ['descriptionHTML', 'descriptionMarkdown'],
+                });
+                resolve({
+                    errCode: 0,
+                    errMessage: 'ok',
+                    data,
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     createSpecialty: createSpecialty,
     getAllSpecialty: getAllSpecialty,
     getDetailSpecialtyById: getDetailSpecialtyById,
+    getDetailSpecialtyByIdForManagement: getDetailSpecialtyByIdForManagement,
 };

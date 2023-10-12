@@ -7,32 +7,39 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             patientId: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             doctorId: {
-                type: Sequelize.INTEGER
+                type: Sequelize.INTEGER,
             },
             description: {
-                type: Sequelize.TEXT
+                type: Sequelize.TEXT,
             },
+            date: {
+                type: Sequelize.STRING,
+            },
+            timeType: {
+                type: Sequelize.STRING,
+            },
+
             files: {
-                type: Sequelize.TEXT
+                type: Sequelize.BLOB('long'),
             },
 
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE
-            }
+                type: Sequelize.DATE,
+            },
         });
     },
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('Histories');
-    }
+    },
 };

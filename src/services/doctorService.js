@@ -396,6 +396,8 @@ let getListPatientForDoctor = (doctorId, date) => {
                         doctorId: doctorId,
                         date: date,
                     },
+                    attributes: [{ exclude: ['files'] }],
+
                     include: [
                         {
                             model: db.User,
@@ -415,6 +417,7 @@ let getListPatientForDoctor = (doctorId, date) => {
                             attributes: ['valueEn', 'valueVi'],
                         },
                     ],
+
                     raw: false,
                     nest: true,
                 });
@@ -432,7 +435,14 @@ let getListPatientForDoctor = (doctorId, date) => {
 let sendRemedy = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.doctorId || !data.patientId || !data.timeType || !data.imgBase64) {
+            if (
+                !data.email ||
+                !data.doctorId ||
+                !data.patientId ||
+                !data.timeType ||
+                !data.imgBase64 ||
+                !data.description
+            ) {
                 resolve({
                     errCode: 1,
                     errMessage: 'Missing required parameters',
@@ -452,11 +462,71 @@ let sendRemedy = (data) => {
                     await appointment.save();
                 }
 
+                await db.History.findOrCreate({
+                    where: { patientId: data.patientId, doctorId: data.doctorId, date: data.date },
+                    defaults: {
+                        patientId: data.patientId,
+                        doctorId: data.doctorId,
+                        timeType: data.timeType,
+                        date: data.date,
+                        files: data.imgBase64,
+                        description: data.description,
+                    },
+                });
+
                 await emailService.sendAttachment(data);
 
                 resolve({
                     errCode: 0,
                     errMessage: 'OK',
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getListHistoryForDoctor = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'Missing required parameter',
+                });
+            } else {
+                let data = await db.History.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date,
+                    },
+                    include: [
+                        {
+                            model: db.User,
+                            as: 'patientDataHistory',
+                            attributes: ['email', 'firstName', 'address', 'gender'],
+                            include: [
+                                {
+                                    model: db.Allcode,
+                                    as: 'genderData',
+                                    attributes: ['valueEn', 'valueVi'],
+                                },
+                            ],
+                        },
+                        {
+                            model: db.Allcode,
+                            as: 'timeTypeDataHistory',
+                            attributes: ['valueEn', 'valueVi'],
+                        },
+                    ],
+
+                    raw: false,
+                    nest: true,
+                });
+                resolve({
+                    errCode: 0,
+                    data: data,
                 });
             }
         } catch (e) {
@@ -475,4 +545,5 @@ module.exports = {
     getProfileDoctorById: getProfileDoctorById,
     getListPatientForDoctor: getListPatientForDoctor,
     sendRemedy: sendRemedy,
+    getListHistoryForDoctor: getListHistoryForDoctor,
 };
