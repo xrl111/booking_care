@@ -396,8 +396,7 @@ let getListPatientForDoctor = (doctorId, date) => {
                         doctorId: doctorId,
                         date: date,
                     },
-                    attributes: [{ exclude: ['files'] }],
-
+                    attributes: { exclude: ['files'] },
                     include: [
                         {
                             model: db.User,
@@ -417,9 +416,8 @@ let getListPatientForDoctor = (doctorId, date) => {
                             attributes: ['valueEn', 'valueVi'],
                         },
                     ],
-
                     raw: false,
-                    nest: true,
+                    nest: true
                 });
                 resolve({
                     errCode: 0,
